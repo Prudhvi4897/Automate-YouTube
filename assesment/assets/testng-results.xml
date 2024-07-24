@@ -2,36 +2,32 @@
 <testng-results total="5" passed="4" failed="0" skipped="1">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-07-24T17:22:09Z" name="Test Suite for Buildout" finished-at="2024-07-24T17:22:39Z" duration-ms="30181">
+  <suite started-at="2024-07-24T17:58:51Z" name="Test Suite for Buildout" finished-at="2024-07-24T17:59:18Z" duration-ms="26499">
     <groups>
     </groups>
-    <test started-at="2024-07-24T17:22:09Z" name="Test Cases for Buildout" finished-at="2024-07-24T17:22:39Z" duration-ms="30181">
+    <test started-at="2024-07-24T17:58:51Z" name="Test Cases for Buildout" finished-at="2024-07-24T17:59:18Z" duration-ms="26499">
       <class name="demo.TestCases">
-        <test-method is-config="true" signature="startBrowser()[pri:0, instance:demo.TestCases@2a79d4b1]" started-at="2024-07-24T22:52:09Z" name="startBrowser" finished-at="2024-07-24T22:52:12Z" duration-ms="2517" status="PASS">
+        <test-method is-config="true" signature="startBrowser()[pri:0, instance:demo.TestCases@485e36bc]" started-at="2024-07-24T23:28:51Z" name="startBrowser" finished-at="2024-07-24T23:28:54Z" duration-ms="2552" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startBrowser -->
-        <test-method signature="testCase01()[pri:0, instance:demo.TestCases@2a79d4b1]" started-at="2024-07-24T22:52:12Z" name="testCase01" finished-at="2024-07-24T22:52:18Z" duration-ms="6182" status="PASS">
+        <test-method signature="testCase01()[pri:0, instance:demo.TestCases@485e36bc]" started-at="2024-07-24T23:28:54Z" name="testCase01" finished-at="2024-07-24T23:28:59Z" duration-ms="5907" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCase01 -->
-        <test-method signature="testCase02()[pri:0, instance:demo.TestCases@2a79d4b1]" started-at="2024-07-24T22:52:18Z" name="testCase02" finished-at="2024-07-24T22:52:22Z" duration-ms="4271" status="PASS">
+        <test-method signature="testCase02()[pri:0, instance:demo.TestCases@485e36bc]" started-at="2024-07-24T23:28:59Z" name="testCase02" finished-at="2024-07-24T23:29:01Z" duration-ms="1534" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCase02 -->
-        <test-method signature="testCase03()[pri:0, instance:demo.TestCases@2a79d4b1]" started-at="2024-07-24T22:52:22Z" name="testCase03" finished-at="2024-07-24T22:52:31Z" duration-ms="8384" status="PASS">
+        <test-method signature="testCase03()[pri:0, instance:demo.TestCases@485e36bc]" started-at="2024-07-24T23:29:01Z" name="testCase03" finished-at="2024-07-24T23:29:09Z" duration-ms="7999" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCase03 -->
-        <test-method signature="testCase04()[pri:0, instance:demo.TestCases@2a79d4b1]" started-at="2024-07-24T22:52:31Z" name="testCase04" finished-at="2024-07-24T22:52:38Z" duration-ms="7039" status="PASS">
+        <test-method signature="testCase04()[pri:0, instance:demo.TestCases@485e36bc]" started-at="2024-07-24T23:29:09Z" name="testCase04" finished-at="2024-07-24T23:29:17Z" duration-ms="8494" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testCase04 -->
-        <test-method is-config="true" signature="endTest()[pri:0, instance:demo.TestCases@2a79d4b1]" started-at="2024-07-24T22:52:38Z" name="endTest" finished-at="2024-07-24T22:52:39Z" duration-ms="1785" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- endTest -->
-        <test-method signature="testCase05(java.lang.String)[pri:0, instance:demo.TestCases@2a79d4b1]" started-at="2024-07-24T22:52:38Z" name="testCase05" finished-at="2024-07-24T22:52:38Z" duration-ms="0" status="SKIP">
+        <test-method signature="testCase05(java.lang.String)[pri:0, instance:demo.TestCases@485e36bc]" started-at="2024-07-24T23:29:18Z" name="testCase05" finished-at="2024-07-24T23:29:18Z" duration-ms="0" status="SKIP">
           <exception class="org.testng.TestNGException">
             <message>
               <![CDATA[

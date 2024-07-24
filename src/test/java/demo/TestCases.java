@@ -81,18 +81,57 @@ public class TestCases extends ExcelDataProvider { // Lets us read the data
         }
 
         @Test
-    public void testCase02() throws InterruptedException {
-    System.out.println("Started testCase02");
-    String URL = "https://www.youtube.com/";
-    Assert.assertTrue(Wrappers.navigateToUrl(driver, URL), "Navigation to the URL failed.");
-    
-    Wrappers.clickOnTab(driver, "Movies");
-    Wrappers.clickOnNextButton(driver, "Top selling", 3);
-   // Wrappers.maturityLastOfMovie(driver);
-  //  Wrappers.genreOfLastMovie(driver);
+public void testCase02() throws InterruptedException {
+    System.out.println("Start Test case: testCase02");
 
-    System.out.println("Ended testCase02");
+    SoftAssert softAssert = new SoftAssert();
+
+    try {
+        // Navigate to Previous Page
+        driver.navigate().back();
+
+        // Locate and click Movies Element
+        WebElement moviesSection = driver.findElement(By.xpath("//yt-formatted-string[text()='Movies']"));
+        SeleniumWrapper.clickAction(moviesSection, driver);
+
+        // Verify Movies Text
+        WebElement moviesTextElement = driver.findElement(By.xpath("//span[text()='Movies']"));
+        String moviesText = moviesTextElement.getText();
+        softAssert.assertEquals(moviesText, "Movies", "Movies text does not match");
+
+        // Wait to ensure elements are loaded
+        Thread.sleep(2000);
+
+        // Locate and click Right Arrow button until it disappears
+        WebElement rightArrowBtn = driver.findElement(By.xpath("(//ytd-button-renderer[@class='style-scope yt-horizontal-list-renderer arrow'])[2]"));
+        while (rightArrowBtn.isDisplayed()) {
+            rightArrowBtn.click();
+            Thread.sleep(1000); // Adjust timing if necessary
+        }
+
+        // Verify Rating Element
+        WebElement aRating = driver.findElement(By.xpath("(//p[text()='A'])[3]"));
+        String aRatingText = aRating.getText();
+        softAssert.assertEquals(aRatingText, "A", "Rating does not match 'A'");
+        System.out.println("Verified Maturity for the Movie: " + aRatingText);
+
+        // Verify Genre Element
+        WebElement movieGenre = driver.findElement(By.xpath("(//span[contains(text(), 'Comedy')])[3]"));
+        String movieGenreText = movieGenre.getText();
+        softAssert.assertTrue(movieGenreText.contains("Comedy"), "Unverified Genre");
+        System.out.println("Verified Genre for the Movie: " + movieGenreText);
+
+        // Verify All Assert statements using assertAll()
+        softAssert.assertAll();
+
+    } catch (Exception e) {
+        // Print stack trace to debug
+        e.printStackTrace();
+    }
+
+    System.out.println("End Test case: testCase02");
 }
+
 
 
         @Test
@@ -185,10 +224,10 @@ public class TestCases extends ExcelDataProvider { // Lets us read the data
                 };
         }
 
-        @AfterTest
-        public void endTest() {
-                driver.close();
-                driver.quit();
+     //   @AfterTest
+     //   public void endTest() {
+     //           driver.close();
+     //           driver.quit();
 
-        }
+      //  }
 }

@@ -73,7 +73,7 @@ public class Wrappers {
         try {
             Thread.sleep(1000);
     
-            // Retrieve movie title and genre elements
+            // Retrieve movie elements
             List<WebElement> movieElements = driver.findElements(By.xpath("//*[@id='video-title']"));
     
             if (!movieElements.isEmpty()) {
@@ -87,6 +87,7 @@ public class Wrappers {
                 // Log movie title and genre
                 System.out.println("Movie title: " + movieTitle);
                 System.out.println("Genre found: " + genre);
+                System.out.println("Full aria-label: " + ariaLabel);
     
                 // Check genre against expected values
                 SoftAssert softAssert = new SoftAssert();
@@ -102,6 +103,45 @@ public class Wrappers {
         }
         return null;
     }
+  
+    
+    public static String genreOfLastMovie(ChromeDriver driver) {
+        try {
+            // Wait for elements to be present (consider using WebDriverWait for better stability)
+            Thread.sleep(1000);
+    
+            // Retrieve movie genre elements
+            List<WebElement> movieGenreElements = driver.findElements(By.xpath("//*[@class='yt-simple-endpoint style-scope ytd-grid-movie-renderer']/span"));
+    
+            if (!movieGenreElements.isEmpty()) {
+                // Select the last element
+                WebElement lastElement = movieGenreElements.get(movieGenreElements.size() - 1);
+                String genreText = lastElement.getText().trim();
+    
+                // Extract genre part if the format is known
+                String[] genreParts = genreText.split(" • ");
+                if (genreParts.length > 0) {
+                    genreText = genreParts[0].trim(); // Take the first part as the genre
+                }
+    
+                // Log the genre for debugging
+                System.out.println("Genre found: " + genreText);
+    
+                // Soft assert to check if the genre matches the expected values
+                SoftAssert softAssert = new SoftAssert();
+                softAssert.assertTrue(genreText.startsWith("Comedy") || genreText.startsWith("Animation"),
+                    "Expected genre to be Comedy or Animation but found " + genreText);
+    
+                softAssert.assertAll();
+            } else {
+                System.out.println("No movie genre elements found.");
+            }
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e.getMessage());
+        }
+        return null;
+    }
+    
     
     private static String extractGenreFromAriaLabel(String ariaLabel) {
         // Example aria-label: "The Wolf of Wall Street by Comedy • 2013 2 hours, 44 minutes"
@@ -113,22 +153,6 @@ public class Wrappers {
         return "Unknown";
     }
     
-
-    public static String genreOfLastMovie(ChromeDriver driver) {
-        try {
-            List<WebElement> movieGenreElement = driver.findElements(By.xpath("//*[@class='yt-simple-endpoint style-scope ytd-grid-movie-renderer']/span"));
-            WebElement lastElement = movieGenreElement.get(movieGenreElement.size() - 1);
-            String[] movieGenre = lastElement.getText().trim().split(" • ");
-            String genreText = movieGenre[0];
-            System.out.println(genreText);
-            SoftAssert softAssert = new SoftAssert();
-            softAssert.assertTrue(genreText.startsWith("Comedy") || genreText.startsWith("Animation"), "Expected genre to be Comedy or Animation but found " + genreText);
-            softAssert.assertAll();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
 
     public static void clickOnTab(ChromeDriver driver, String movieName) throws InterruptedException {
         try {
