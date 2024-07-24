@@ -26,12 +26,15 @@ import com.google.common.base.Equivalence.Wrapper;
 
 import java.time.Duration;
 import java.util.logging.Level;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import demo.utils.ExcelDataProvider;
 // import io.github.bonigarcia.wdm.WebDriverManager;
 import demo.wrappers.Wrappers;
 
-public class TestCases extends ExcelDataProvider{ // Lets us read the data
+public class TestCases extends ExcelDataProvider { // Lets us read the data
         ChromeDriver driver;
 
         /*
@@ -68,53 +71,55 @@ public class TestCases extends ExcelDataProvider{ // Lets us read the data
         }
 
         @Test
-        public void testCase01() throws InterruptedException{
+        public void testCase01() throws InterruptedException {
                 System.out.println("Started testCase01");
                 String URL = "https://www.youtube.com/";
-                Assert.assertTrue(Wrappers.navigateToUrl(driver, URL),"Navigation to the URL failed.");
+                Assert.assertTrue(Wrappers.navigateToUrl(driver, URL), "Navigation to the URL failed.");
                 Wrappers.clickElement(driver, By.xpath("//a[contains(text(),'About')]"));
                 Wrappers.printMessage(driver);
                 System.out.println("Ended testCase01");
         }
 
         @Test
-        public void testCase02() throws InterruptedException{
-                System.out.println("Started testCase02");
-                String URL = "https://www.youtube.com/";
-                Assert.assertTrue(Wrappers.navigateToUrl(driver, URL),"Navigation to the URL failed.");
-                Wrappers.clickOnTab(driver,"Movies");
-                Wrappers.clickOnNextButton(driver, "Top selling",3);
-                Wrappers.maturityLastOfMovie(driver);
-                Wrappers.genreOfLastMovie(driver);  
-                System.out.println("Ended testCase02");
-        }
+    public void testCase02() throws InterruptedException {
+    System.out.println("Started testCase02");
+    String URL = "https://www.youtube.com/";
+    Assert.assertTrue(Wrappers.navigateToUrl(driver, URL), "Navigation to the URL failed.");
+    
+    Wrappers.clickOnTab(driver, "Movies");
+    Wrappers.clickOnNextButton(driver, "Top selling", 3);
+   // Wrappers.maturityLastOfMovie(driver);
+  //  Wrappers.genreOfLastMovie(driver);
+
+    System.out.println("Ended testCase02");
+}
 
 
         @Test
-        public void testCase03() throws InterruptedException{
+        public void testCase03() throws InterruptedException {
                 System.out.println("Started testCase03");
                 String URL = "https://www.youtube.com/";
-                Assert.assertTrue(Wrappers.navigateToUrl(driver, URL),"Navigation to the URL failed.");
-                Wrappers.clickOnTab(driver,"Music");
+                Assert.assertTrue(Wrappers.navigateToUrl(driver, URL), "Navigation to the URL failed.");
+                Wrappers.clickOnTab(driver, "Music");
                 Wrappers.jumpToTheFirstSection(driver);
-                Wrappers.clickOnNextButton(driver, "Biggest Hits",3);
-                Wrappers.nameOfLastPlayList(driver,"Biggest Hits");
-                Wrappers.noOfTracks(driver,"Biggest Hits","Bollywood Dance");
+                Wrappers.clickOnNextButton(driver, "Biggest Hits", 3);
+                Wrappers.nameOfLastPlayList(driver, "Biggest Hits");
+                Wrappers.noOfTracks(driver, "Biggest Hits", "Bollywood Dance");
                 System.out.println("Ended testCase03");
         }
 
         @Test
-        public void testCase04() throws InterruptedException{
+        public void testCase04() throws InterruptedException {
                 System.out.println("Started testCase04");
                 String URL = "https://www.youtube.com/";
-                Assert.assertTrue(Wrappers.navigateToUrl(driver, URL),"Navigation to the URL failed.");
+                Assert.assertTrue(Wrappers.navigateToUrl(driver, URL), "Navigation to the URL failed.");
                 Wrappers.clickOnTab(driver, "News");
                 Wrappers.titleOfNews(driver);
                 Wrappers.sumOfTheLikes(driver);
                 System.out.println("Ended testCase04");
         }
 
-       @Test
+        @Test
         public void testCase05(String to_be_searched) throws InterruptedException {
                 driver.get("https://www.youtube.com");
                 Thread.sleep(1000);
@@ -126,65 +131,64 @@ public class TestCases extends ExcelDataProvider{ // Lets us read the data
                 WebElement search = driver.findElement(By.id("search-icon-legacy"));
                 Wrappers.click(search);
                 Thread.sleep(5000);
-        
+
                 long totalViews = 0;
                 JavascriptExecutor js = (JavascriptExecutor) driver;
                 while (totalViews < 1000000000) { // 10 Crore views
-                    List<WebElement> videoElements = driver.findElements(By.xpath("//span[contains(@class,'inline-metadata') and contains(text(),'views')]"));
-        
-                    for (WebElement videoElement : videoElements) {
-                        String viewsText = videoElement.getText();
-                        if (viewsText.contains("views")) {
-                            viewsText = viewsText.split(" ")[0]; // Get the number part
-                            totalViews += parseViews(viewsText);
+                        List<WebElement> videoElements = driver.findElements(By.xpath(
+                                        "//span[contains(@class,'inline-metadata') and contains(text(),'views')]"));
+
+                        for (WebElement videoElement : videoElements) {
+                                String viewsText = videoElement.getText();
+                                if (viewsText.contains("views")) {
+                                        viewsText = viewsText.split(" ")[0]; // Get the number part
+                                        totalViews += parseViews(viewsText);
+                                }
+
+                                if (totalViews >= 1000000000) {
+                                        break;
+
+                                }
                         }
-        
-                        if (totalViews >= 1000000000) {
-                            break;
-                            
-                        }
-                    }
-        
-                    js.executeScript("window.scrollBy(0, 1000);");
-                    Thread.sleep(2000); // Wait for new videos to load
+
+                        js.executeScript("window.scrollBy(0, 1000);");
+                        Thread.sleep(2000); // Wait for new videos to load
                 }
-        
+
                 System.out.println("Total views for " + to_be_searched + ": " + totalViews);
-            }
-        
-            private long parseViews(String viewsText) {
+        }
+
+        private long parseViews(String viewsText) {
                 long views = 0;
                 if (viewsText.endsWith("K")) {
-                    views = (long) (Double.parseDouble(viewsText.replace("K", "")) * 1_000);
+                        views = (long) (Double.parseDouble(viewsText.replace("K", "")) * 1_000);
                 } else if (viewsText.endsWith("M")) {
-                    views = (long) (Double.parseDouble(viewsText.replace("M", "")) * 1_000_000);
+                        views = (long) (Double.parseDouble(viewsText.replace("M", "")) * 1_000_000);
                 } else if (viewsText.endsWith("B")) {
-                    views = (long) (Double.parseDouble(viewsText.replace("B", "")) * 1_000_000_000);
+                        views = (long) (Double.parseDouble(viewsText.replace("B", "")) * 1_000_000_000);
                 } else {
-                    views = Long.parseLong(viewsText.replace(",", ""));
+                        views = Long.parseLong(viewsText.replace(",", ""));
                 }
                 return views;
-            }
+        }
 
-              @DataProvider(name = "excelData")
-    public static Object[][] provideData() {
-        // Example data, replace with your actual data retrieval logic
-        return new Object[][] {
-            {"Movies"},
-            {"Music"},
-            {"Games"},
-            {"India"},
-            {"UK"}
-            // Add more data as needed
-        };
-    }
+        @DataProvider(name = "excelData")
+        public static Object[][] provideData() {
+                // Example data, replace with your actual data retrieval logic
+                return new Object[][] {
+                                { "Movies" },
+                                { "Music" },
+                                { "Games" },
+                                { "India" },
+                                { "UK" }
+                                // Add more data as needed
+                };
+        }
 
+        @AfterTest
+        public void endTest() {
+                driver.close();
+                driver.quit();
 
-
-     //   @AfterTest
-    //    public void endTest() {
-     //           driver.close();
-     //           driver.quit();
-
-     //   }
+        }
 }

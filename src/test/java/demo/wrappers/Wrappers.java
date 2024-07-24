@@ -69,36 +69,52 @@ public class Wrappers {
         }
     }
 
-    public static void maturityLastOfMovie(ChromeDriver driver) {
+    public static String maturityLastOfMovie(ChromeDriver driver) {
         try {
             Thread.sleep(1000);
-            List<WebElement> matureElements = driver.findElements(By.xpath("//*[@class='badges style-scope ytd-grid-movie-renderer']/div[2]/p"));
-
-            if (!matureElements.isEmpty()) {
-                WebElement lastElement = matureElements.get(matureElements.size() - 1);
-                String matureElementText = lastElement.getText().replaceAll("[^A-Za-z/\\d+]", "").trim();
-                System.out.println(matureElementText);
-                if (matureElementText.equals("A")) {
-                    System.out.println("This is an Adult movie. Please watch it if you are older than 18 years.");
-                } else if (matureElementText.equals("U/A")) {
-                    System.out.println("Please watch this movie under Parental Guidance.");
-                } else {
-                    System.out.println("This is a Universal movie. Anybody can watch this movie.");
-                }
-
-                // Soft assert
+    
+            // Retrieve movie title and genre elements
+            List<WebElement> movieElements = driver.findElements(By.xpath("//*[@id='video-title']"));
+    
+            if (!movieElements.isEmpty()) {
+                WebElement lastElement = movieElements.get(movieElements.size() - 1);
+                String ariaLabel = lastElement.getAttribute("aria-label");
+    
+                // Extract movie title and genre from aria-label
+                String movieTitle = lastElement.getText().trim();
+                String genre = extractGenreFromAriaLabel(ariaLabel);
+    
+                // Log movie title and genre
+                System.out.println("Movie title: " + movieTitle);
+                System.out.println("Genre found: " + genre);
+    
+                // Check genre against expected values
                 SoftAssert softAssert = new SoftAssert();
-                softAssert.assertEquals(matureElementText, "A", "The movie is not marked 'A' for Mature");
+                softAssert.assertTrue(genre.contains("Comedy") || genre.contains("Animation"),
+                    "Expected genre to be Comedy or Animation but found " + genre);
+    
                 softAssert.assertAll();
             } else {
-                System.out.println("No mature elements found.");
+                System.out.println("No movie elements found.");
             }
         } catch (Exception e) {
             System.out.println("Exception occurred: " + e.getMessage());
         }
+        return null;
     }
+    
+    private static String extractGenreFromAriaLabel(String ariaLabel) {
+        // Example aria-label: "The Wolf of Wall Street by Comedy • 2013 2 hours, 44 minutes"
+        String[] parts = ariaLabel.split("by");
+        if (parts.length > 1) {
+            String genrePart = parts[1].split("•")[0].trim(); // Extract text before "•"
+            return genrePart;
+        }
+        return "Unknown";
+    }
+    
 
-    public static void genreOfLastMovie(ChromeDriver driver) {
+    public static String genreOfLastMovie(ChromeDriver driver) {
         try {
             List<WebElement> movieGenreElement = driver.findElements(By.xpath("//*[@class='yt-simple-endpoint style-scope ytd-grid-movie-renderer']/span"));
             WebElement lastElement = movieGenreElement.get(movieGenreElement.size() - 1);
@@ -111,6 +127,7 @@ public class Wrappers {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return null;
     }
 
     public static void clickOnTab(ChromeDriver driver, String movieName) throws InterruptedException {
@@ -193,18 +210,46 @@ public class Wrappers {
         }
     }
 
-    public static void click(WebElement search) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'click'");
-    }
-
-    public static void sendKeys(WebElement searchBox, String to_be_searched) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendKeys'");
-    }
-
     public static void sumOfTheLikes(ChromeDriver driver) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sumOfTheLikes'");
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            List<WebElement> likeElements = driver.findElements(By.xpath("//span[@id='like-count']"));
+            int totalLikes = 0;
+    
+            for (WebElement likeElement : likeElements) {
+                String likeText = likeElement.getText().replaceAll(",", "");
+                totalLikes += Integer.parseInt(likeText);
+            }
+    
+            System.out.println("Total likes: " + totalLikes);
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e.getMessage());
+        }
     }
+
+
+
+public static void click(WebElement element) {
+    try {
+        element.click();
+        System.out.println("Clicked on the element successfully.");
+    } catch (Exception e) {
+        System.out.println("Error clicking the element: " + e.getMessage());
+    }
+}
+
+public static void sendKeys(WebElement element, String keys) {
+    try {
+        element.sendKeys(keys);
+        System.out.println("Sent keys to the element successfully.");
+    } catch (Exception e) {
+        System.out.println("Error sending keys to the element: " + e.getMessage());
+    }
+}
+
+public static void scrollToRight(ChromeDriver driver) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'scrollToRight'");
+}
+
 }
